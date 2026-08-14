@@ -3,69 +3,127 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Royal Scripts Maker</title>
+  <title>AW Script Intelligence</title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <div class="shell">
-    <header class="top">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="mark">AW</span>
       <div>
-        <p class="kicker">GPT-5.6 · ContactBoxTools</p>
-        <h1>Royal Scripts Maker</h1>
+        <strong>Script Intelligence</strong>
+        <small id="corpusLabel">Training library</small>
       </div>
-      <div class="status" id="statusPill">Connecting…</div>
-    </header>
+    </div>
+    <nav>
+      <button class="nav on" data-view="create">New Script</button>
+      <button class="nav" data-view="history">History</button>
+      <button class="nav" data-view="library">Reference Database</button>
+      <button class="nav" data-view="settings">Settings</button>
+    </nav>
+    <div class="sidebar-foot" id="statusLine">Connecting</div>
+  </aside>
 
-    <section class="layout">
-      <aside class="panel">
-        <label>
-          Collection
-          <select id="collection"></select>
+  <main class="main">
+    <section id="view-create" class="view">
+      <header class="page-head">
+        <p class="eyebrow">Create script</p>
+        <h1>Write from proven patterns</h1>
+        <p class="lede">Every draft is ranked against the full success library, reverse-engineered, then written to the title promise.</p>
+      </header>
+      <form id="createForm" class="create">
+        <label class="title-field">
+          Title
+          <textarea id="title" required rows="3" placeholder="Before She Died, Princess Diana Revealed What Camilla Did Behind Closed Doors"></textarea>
         </label>
-        <label>
-          Model
-          <select id="model">
-            <option value="gpt-5.6-sol">gpt-5.6-sol</option>
-            <option value="gpt-5.6-terra">gpt-5.6-terra</option>
-          </select>
-        </label>
-        <label>
-          Title or topic
-          <input id="title" type="text" placeholder="Prince William SHUTS DOWN Camilla’s latest scheme…" />
-        </label>
-        <label>
-          Extra direction
-          <textarea id="notes" rows="5" placeholder="Optional: angle, characters, ending, CTA…"></textarea>
-        </label>
-        <button id="generateBtn" type="button">Write script</button>
-        <p class="hint" id="collectionHint"></p>
-      </aside>
-
-      <main class="panel output">
-        <div class="output-bar">
-          <strong id="outputTitle">New script</strong>
-          <div class="actions">
-            <button id="copyBtn" type="button" class="ghost">Copy</button>
-            <button id="downloadBtn" type="button" class="ghost">Download</button>
-          </div>
+        <div class="row">
+          <label>
+            Script Maker
+            <select id="scriptMaker"></select>
+          </label>
+          <label>
+            Target word count
+            <input id="wordCount" type="number" min="800" max="8000" value="3500" />
+          </label>
         </div>
-        <pre id="scriptOut" class="script">Pick a collection, enter a title, and generate with GPT-5.6. Style is pulled from the stored Crownwatch and Prime Expedition libraries.</pre>
-      </main>
+        <label>
+          Custom instructions
+          <textarea id="custom" rows="6" placeholder="Add any special instructions for this script..."></textarea>
+        </label>
+        <button id="generateBtn" class="primary" type="submit">Generate Script</button>
+      </form>
     </section>
 
-    <section class="panel library">
-      <div class="output-bar">
-        <strong>Stored databases</strong>
-        <input id="search" type="search" placeholder="Search titles and scripts…" />
+    <section id="view-progress" class="view hidden">
+      <div class="progress-card">
+        <p class="eyebrow">Generating</p>
+        <h2 id="progressTitle"></h2>
+        <ol id="progressSteps" class="steps"></ol>
+        <pre id="liveDraft" class="live"></pre>
       </div>
-      <div class="tabs">
-        <button type="button" class="tab on" data-tab="library">Library</button>
-        <button type="button" class="tab" data-tab="generated">Generated</button>
-      </div>
-      <div id="libraryList" class="cards"></div>
-      <article id="scriptView" class="script-view hidden"></article>
     </section>
-  </div>
+
+    <section id="view-script" class="view hidden">
+      <div class="script-top">
+        <div>
+          <p class="eyebrow" id="scriptMeta"></p>
+          <h1 id="scriptTitle"></h1>
+        </div>
+        <div class="actions">
+          <button type="button" data-act="copy">Copy</button>
+          <button type="button" data-act="txt">Download TXT</button>
+          <button type="button" data-act="docx">Download DOCX</button>
+          <button type="button" data-act="edit">Edit</button>
+          <button type="button" data-act="regen" class="primary">Regenerate</button>
+        </div>
+      </div>
+      <details class="intel">
+        <summary>Script Intelligence</summary>
+        <div id="intelBody"></div>
+      </details>
+      <article id="scriptBody" class="script-body"></article>
+      <p class="save-state" id="saveState"></p>
+    </section>
+
+    <section id="view-history" class="view hidden">
+      <header class="page-head">
+        <p class="eyebrow">History</p>
+        <h1>Generated scripts</h1>
+      </header>
+      <div class="toolbar">
+        <input id="historyQ" type="search" placeholder="Search titles" />
+        <select id="historyMaker"><option value="all">All</option></select>
+        <select id="historySort">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="words">Word count</option>
+          <option value="alpha">Alphabetical</option>
+        </select>
+      </div>
+      <div id="historyList" class="list"></div>
+    </section>
+
+    <section id="view-library" class="view hidden">
+      <header class="page-head">
+        <p class="eyebrow">Reference database</p>
+        <h1>Successful scripts</h1>
+      </header>
+      <div class="toolbar">
+        <input id="libQ" type="search" placeholder="Search the trained library" />
+      </div>
+      <div id="libraryList" class="list"></div>
+    </section>
+
+    <section id="view-settings" class="view hidden">
+      <header class="page-head">
+        <p class="eyebrow">Settings</p>
+        <h1>Engine</h1>
+      </header>
+      <div class="settings" id="settingsBody"></div>
+    </section>
+  </main>
+
+  <div id="errorToast" class="toast hidden"></div>
   <script src="/app.js"></script>
 </body>
 </html>

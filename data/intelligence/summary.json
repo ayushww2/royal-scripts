@@ -1,0 +1,111 @@
+{
+  "scripts": 363,
+  "niches": {
+    "royal-family": 361,
+    "documentary": 2
+  },
+  "avgHookWords": 140,
+  "avgSentenceWords": 17,
+  "topTitleShapes": [
+    {
+      "value": "shocks-world",
+      "count": 27
+    },
+    {
+      "value": "dna-court",
+      "count": 14
+    },
+    {
+      "value": "exposed",
+      "count": 14
+    },
+    {
+      "value": "breaks-silence",
+      "count": 14
+    },
+    {
+      "value": "finally-revealed",
+      "count": 12
+    },
+    {
+      "value": "takes-control",
+      "count": 12
+    },
+    {
+      "value": "stuns",
+      "count": 12
+    },
+    {
+      "value": "banned-stripped",
+      "count": 11
+    }
+  ],
+  "topRehooks": [
+    {
+      "value": "what do you think",
+      "count": 8
+    },
+    {
+      "value": "so what do you think",
+      "count": 7
+    },
+    {
+      "value": "but here's where it gets interesting",
+      "count": 4
+    },
+    {
+      "value": "keep watching to find out what happened next",
+      "count": 4
+    },
+    {
+      "value": "now here's where it gets interesting",
+      "count": 3
+    },
+    {
+      "value": "do you see what the documentary actually was",
+      "count": 3
+    },
+    {
+      "value": "do you see the elegance of it",
+      "count": 3
+    },
+    {
+      "value": "can you imagine",
+      "count": 3
+    }
+  ],
+  "topTransitions": [
+    {
+      "value": "but that's not all",
+      "count": 6
+    },
+    {
+      "value": "but here's where it gets interesting",
+      "count": 4
+    },
+    {
+      "value": "but here's the thing",
+      "count": 4
+    },
+    {
+      "value": "and although you kind of know that this might happen you don't really think about it very much",
+      "count": 4
+    },
+    {
+      "value": "and here's the kicker",
+      "count": 3
+    },
+    {
+      "value": "and why now",
+      "count": 3
+    },
+    {
+      "value": "but here's the problem",
+      "count": 2
+    },
+    {
+      "value": "but behind the scenes things were already starting to change in a quiet but important way",
+      "count": 2
+    }
+  ]
+}
