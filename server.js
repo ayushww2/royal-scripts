@@ -100,7 +100,7 @@ app.get("/api/history/:id", (req, res) => {
     ...item,
     script,
     actualWordCount: countWords(script),
-    qa: item.scriptMaker === "royal-family" ? royalMode.verifyReport(script, item.title) : null,
+    qa: item.scriptMaker === "royal-family" ? royalMode.verifyReport(script, item.title, item.targetWordCount) : null,
   });
 });
 
@@ -115,6 +115,7 @@ app.patch("/api/history/:id", (req, res) => {
   const item = history.update(req.params.id, {
     ...(script ? { script, actualWordCount: countWords(script) } : {}),
     ...(req.body?.title ? { title: String(req.body.title) } : {}),
+    ...(req.body?.targetWordCount ? { targetWordCount: Number(req.body.targetWordCount) } : {}),
     status: "complete",
   });
   res.json(item);

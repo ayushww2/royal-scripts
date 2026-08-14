@@ -33,6 +33,7 @@ h2 { margin: 0 0 18px; }
 .lede { color: var(--muted); margin: 0; line-height: 1.6; }
 .create, .progress-card, .settings { max-width: 760px; }
 label { display: grid; gap: 8px; margin-bottom: 18px; color: var(--muted); font-size: 13px; }
+.hint { color: var(--muted); font-size: 12px; opacity: 0.85; }
 .title-field textarea { min-height: 96px; font-size: 22px; line-height: 1.35; }
 input, select, textarea {
   width: 100%;
