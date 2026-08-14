@@ -9,6 +9,7 @@ const retrieve = require("./lib/retrieve");
 const pipeline = require("./lib/pipeline");
 const history = require("./lib/history");
 const exporter = require("./lib/export");
+const royalMode = require("./lib/royalMode");
 const { countWords, segmentScript } = require("./lib/segment");
 
 const PORT = process.env.PORT || 3000;
@@ -88,7 +89,10 @@ app.get("/api/history", (req, res) => {
 app.get("/api/history/:id", (req, res) => {
   const item = history.get(req.params.id);
   if (!item) return res.status(404).json({ error: "Not found" });
-  res.json(item);
+  res.json({
+    ...item,
+    qa: item.scriptMaker === "royal-family" ? royalMode.verifyReport(item.script || "", item.title) : null,
+  });
 });
 
 app.patch("/api/history/:id", (req, res) => {
