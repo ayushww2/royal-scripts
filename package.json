@@ -1,0 +1,13 @@
+{
+  "name": "royal-scripts-maker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Royal Scripts Maker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
