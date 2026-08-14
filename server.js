@@ -86,30 +86,44 @@ app.get("/api/history", (req, res) => {
   });
 });
 
+function royalScript(item) {
+  const raw = item?.script || "";
+  if (item?.scriptMaker !== "royal-family") return raw;
+  return segmentScript(royalMode.stripMeta(segmentScript(raw)));
+}
+
 app.get("/api/history/:id", (req, res) => {
   const item = history.get(req.params.id);
   if (!item) return res.status(404).json({ error: "Not found" });
+  const script = royalScript(item);
   res.json({
     ...item,
-    qa: item.scriptMaker === "royal-family" ? royalMode.verifyReport(item.script || "", item.title) : null,
+    script,
+    actualWordCount: countWords(script),
+    qa: item.scriptMaker === "royal-family" ? royalMode.verifyReport(script, item.title) : null,
   });
 });
 
 app.patch("/api/history/:id", (req, res) => {
-  const script = typeof req.body?.script === "string" ? segmentScript(req.body.script) : undefined;
+  const existing = history.get(req.params.id);
+  if (!existing) return res.status(404).json({ error: "Not found" });
+  let script = typeof req.body?.script === "string" ? req.body.script : undefined;
+  if (script != null && existing.scriptMaker === "royal-family") {
+    script = royalMode.stripMeta(script);
+  }
+  if (script != null) script = segmentScript(script);
   const item = history.update(req.params.id, {
     ...(script ? { script, actualWordCount: countWords(script) } : {}),
     ...(req.body?.title ? { title: String(req.body.title) } : {}),
     status: "complete",
   });
-  if (!item) return res.status(404).json({ error: "Not found" });
   res.json(item);
 });
 
 app.get("/api/history/:id.txt", (req, res) => {
   const item = history.get(req.params.id);
   if (!item) return res.status(404).send("Not found");
-  const body = exporter.toTxt(item);
+  const body = exporter.toTxt({ ...item, script: royalScript(item) });
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Content-Disposition", `attachment; filename="${exporter.filename(item, "txt")}"`);
   res.send(body);
@@ -118,7 +132,7 @@ app.get("/api/history/:id.txt", (req, res) => {
 app.get("/api/history/:id.docx", async (req, res) => {
   const item = history.get(req.params.id);
   if (!item) return res.status(404).send("Not found");
-  const buf = await exporter.toDocx(item);
+  const buf = await exporter.toDocx({ ...item, script: royalScript(item), actualWordCount: countWords(royalScript(item)) });
   res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
   res.setHeader("Content-Disposition", `attachment; filename="${exporter.filename(item, "docx")}"`);
   res.send(buf);
