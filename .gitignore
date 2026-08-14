@@ -2,3 +2,4 @@ node_modules/
 .railway/
 .env
 *.log
+data/generated.json

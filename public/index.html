@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Royal Scripts Maker</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="top">
+      <div>
+        <p class="kicker">GPT-5.6 · ContactBoxTools</p>
+        <h1>Royal Scripts Maker</h1>
+      </div>
+      <div class="status" id="statusPill">Connecting…</div>
+    </header>
+
+    <section class="layout">
+      <aside class="panel">
+        <label>
+          Collection
+          <select id="collection"></select>
+        </label>
+        <label>
+          Model
+          <select id="model">
+            <option value="gpt-5.6-sol">gpt-5.6-sol</option>
+            <option value="gpt-5.6-terra">gpt-5.6-terra</option>
+          </select>
+        </label>
+        <label>
+          Title or topic
+          <input id="title" type="text" placeholder="Prince William SHUTS DOWN Camilla’s latest scheme…" />
+        </label>
+        <label>
+          Extra direction
+          <textarea id="notes" rows="5" placeholder="Optional: angle, characters, ending, CTA…"></textarea>
+        </label>
+        <button id="generateBtn" type="button">Write script</button>
+        <p class="hint" id="collectionHint"></p>
+      </aside>
+
+      <main class="panel output">
+        <div class="output-bar">
+          <strong id="outputTitle">New script</strong>
+          <div class="actions">
+            <button id="copyBtn" type="button" class="ghost">Copy</button>
+            <button id="downloadBtn" type="button" class="ghost">Download</button>
+          </div>
+        </div>
+        <pre id="scriptOut" class="script">Pick a collection, enter a title, and generate with GPT-5.6. Style is pulled from the stored Crownwatch and Prime Expedition libraries.</pre>
+      </main>
+    </section>
+
+    <section class="panel library">
+      <div class="output-bar">
+        <strong>Stored databases</strong>
+        <input id="search" type="search" placeholder="Search titles and scripts…" />
+      </div>
+      <div class="tabs">
+        <button type="button" class="tab on" data-tab="library">Library</button>
+        <button type="button" class="tab" data-tab="generated">Generated</button>
+      </div>
+      <div id="libraryList" class="cards"></div>
+      <article id="scriptView" class="script-view hidden"></article>
+    </section>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
