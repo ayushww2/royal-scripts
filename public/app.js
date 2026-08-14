@@ -3,8 +3,8 @@ const state = {
   status: null,
   current: null,
   editing: false,
-  draft: "",
-  lastForm: null,
+  jobs: [],
+  pollTimer: null,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -12,12 +12,16 @@ const $ = (id) => document.getElementById(id);
 function showView(name) {
   state.view = name;
   document.querySelectorAll(".view").forEach((el) => el.classList.toggle("hidden", el.id !== `view-${name}`));
-  document.querySelectorAll(".nav").forEach((btn) => btn.classList.toggle("on", btn.dataset.view === name || (name === "script" && btn.dataset.view === "history") || (name === "progress" && btn.dataset.view === "create")));
+  document.querySelectorAll(".nav").forEach((btn) => {
+    const active = btn.dataset.view === name || (name === "script" && btn.dataset.view === "history");
+    btn.classList.toggle("on", active);
+  });
 }
 
-function toast(message) {
+function toast(message, ok = false) {
   const el = $("errorToast");
   el.textContent = message;
+  el.classList.toggle("ok", ok);
   el.classList.remove("hidden");
   setTimeout(() => el.classList.add("hidden"), 5000);
 }
@@ -57,8 +61,10 @@ async function boot() {
     <p class="meta">Plan model: <strong>${status.planModel}</strong></p>
     <p class="meta">Hook target from corpus: ${status.avgHookWords} words</p>
     <p class="meta">Average sentence length: ${status.avgSentenceWords} words</p>
-    <p class="meta">Reference scripts stay in the success database. Generated drafts go to History until they earn performance data.</p>
+    <p class="meta">Generate runs in the background. The form clears so you can queue another script.</p>
   `;
+  await refreshJobs();
+  startPolling();
 }
 
 function formPayload() {
@@ -70,22 +76,62 @@ function formPayload() {
   };
 }
 
-const STEPS = [
-  ["parse", "Analyzing your title..."],
-  ["search", "Searching successful scripts..."],
-  ["references", "Found 3 strong references..."],
-  ["reverse", "Reverse-engineering successful patterns..."],
-  ["research", "Researching subject..."],
-  ["write", "Writing hook and sections..."],
-  ["loyalty", "Checking title loyalty..."],
-  ["lines", "Optimizing narration lines..."],
-  ["save", "Preparing document..."],
-];
+function clearForm() {
+  $("title").value = "";
+  $("custom").value = "";
+  $("title").focus();
+}
 
-function renderSteps(active) {
-  $("progressSteps").innerHTML = STEPS.map(
-    ([id, label]) => `<li class="${id === active ? "on" : ""}">${escapeHtml(label)}</li>`
-  ).join("");
+function renderQueue() {
+  const active = state.jobs.filter((j) => j.status === "generating");
+  $("historyBadge").textContent = String(active.length);
+  $("historyBadge").classList.toggle("hidden", active.length === 0);
+  if (!active.length) {
+    $("queue").classList.add("hidden");
+    $("queue").innerHTML = "";
+    return;
+  }
+  $("queue").classList.remove("hidden");
+  $("queue").innerHTML = active
+    .map(
+      (job) => `<article data-job="${job.id}">
+        <p class="eyebrow">Generating in background</p>
+        <h3>${escapeHtml(job.title)}</h3>
+        <p class="meta">${escapeHtml(job.stageLabel || "Working...")}</p>
+      </article>`
+    )
+    .join("");
+}
+
+async function refreshJobs() {
+  const prev = new Map(state.jobs.map((j) => [j.id, j.status]));
+  const data = await fetch("/api/jobs").then((r) => r.json()).catch(() => ({ items: [] }));
+  const historyData = await fetch("/api/history").then((r) => r.json()).catch(() => ({ items: [] }));
+  const generating = (historyData.items || []).filter((j) => j.status === "generating");
+  const live = data.items || [];
+  const byId = new Map();
+  [...generating, ...live].forEach((j) => byId.set(j.id, j));
+  state.jobs = [...byId.values()];
+  renderQueue();
+  for (const job of live.concat(generating)) {
+    const was = prev.get(job.id);
+    if (was === "generating" && job.status === "complete") {
+      toast(`Script ready: ${job.title}`, true);
+    }
+    if (job.status === "failed" && was !== "failed") {
+      toast(`Generation was interrupted. Try again. ${job.error || ""}`.trim());
+    }
+  }
+  if (state.view === "history") await loadHistory(false);
+  if (state.view === "script" && state.current && state.current.status === "generating") {
+    const latest = await fetch(`/api/history/${state.current.id}`).then((r) => r.json()).catch(() => null);
+    if (latest) openScript(latest, false);
+  }
+}
+
+function startPolling() {
+  if (state.pollTimer) clearInterval(state.pollTimer);
+  state.pollTimer = setInterval(refreshJobs, 2000);
 }
 
 async function generate(payload) {
@@ -93,71 +139,41 @@ async function generate(payload) {
     $("title").focus();
     return;
   }
-  state.lastForm = payload;
-  state.draft = "";
-  $("progressTitle").textContent = payload.title;
-  $("liveDraft").textContent = "";
-  renderSteps("parse");
-  showView("progress");
-  $("generateBtn").disabled = true;
-
-  try {
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = "";
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const parts = buffer.split("\n\n");
-      buffer = parts.pop() || "";
-      for (const part of parts) {
-        const line = part.trim();
-        if (!line.startsWith("data:")) continue;
-        const event = JSON.parse(line.slice(5).trim());
-        if (event.type === "status") renderSteps(event.stage);
-        if (event.type === "token") {
-          state.draft += event.token;
-          $("liveDraft").textContent = state.draft;
-          $("liveDraft").scrollTop = $("liveDraft").scrollHeight;
-        }
-        if (event.type === "done") openScript(event.saved);
-        if (event.type === "error") throw new Error(event.error);
-      }
-    }
-  } catch (err) {
-    toast(`Generation was interrupted. Try again. ${err.message}`);
-    showView("create");
-    $("title").value = payload.title;
-    $("wordCount").value = payload.targetWordCount;
-    $("scriptMaker").value = payload.scriptMaker;
-    $("custom").value = payload.customInstructions;
-  } finally {
-    $("generateBtn").disabled = false;
+  const response = await fetch("/api/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    toast(data.error || "Could not start generation");
+    return;
   }
+  clearForm();
+  toast(`Generating in background: ${payload.title}`, true);
+  await refreshJobs();
 }
 
-function openScript(item) {
+function openScript(item, switchView = true) {
   state.current = item;
   state.editing = false;
+  const generating = item.status === "generating";
   $("scriptTitle").textContent = item.title;
-  $("scriptMeta").textContent = `${item.scriptMakerLabel || item.scriptMaker} · ${item.actualWordCount} words · ${new Date(item.createdAt).toLocaleString()} · loyalty ${item.titleLoyaltyScore || "—"}`;
-  $("scriptBody").innerHTML = formatScript(item.script);
+  $("scriptMeta").textContent = generating
+    ? `${item.scriptMakerLabel || item.scriptMaker} · ${item.stageLabel || "Generating..."}`
+    : `${item.scriptMakerLabel || item.scriptMaker} · ${item.actualWordCount || 0} words · ${new Date(item.createdAt).toLocaleString()} · loyalty ${item.titleLoyaltyScore || "—"}`;
+  $("scriptBody").innerHTML = formatScript(item.script || item.draft || (generating ? "Writing in the background..." : ""));
   $("intelBody").innerHTML = (item.references || [])
     .map(
       (r, i) => `<p><strong>${i + 1}. ${escapeHtml(r.title)}</strong><br>${r.similarity}% relevant · ${escapeHtml(r.reasonSelected || "")}</p>`
     )
     .join("") || "<p>Built using patterns from the trained library.</p>";
-  $("saveState").textContent = "Saved";
-  showView("script");
+  $("saveState").textContent = generating ? item.stageLabel || "Generating..." : item.status === "failed" ? item.stageLabel : "Saved";
+  if (switchView) showView("script");
 }
 
-async function loadHistory() {
+async function loadHistory(switchTo = true) {
+  if (switchTo) showView("history");
   const params = new URLSearchParams({
     q: $("historyQ").value.trim(),
     scriptMaker: $("historyMaker").value,
@@ -166,12 +182,16 @@ async function loadHistory() {
   const data = await fetch(`/api/history?${params}`).then((r) => r.json());
   $("historyList").innerHTML =
     data.items
-      .map(
-        (item) => `<article data-id="${item.id}">
+      .map((item) => {
+        const generating = item.status === "generating";
+        const failed = item.status === "failed";
+        return `<article data-id="${item.id}" class="${generating ? "generating" : ""}">
           <h3>${escapeHtml(item.title)}</h3>
-          <p class="meta">${escapeHtml(item.scriptMaker)} · ${item.actualWordCount} words · ${new Date(item.createdAt).toLocaleString()}</p>
-        </article>`
-      )
+          <p class="meta">${escapeHtml(item.scriptMaker)} · ${generating ? item.stageLabel || "Generating..." : `${item.actualWordCount || 0} words`} · ${new Date(item.createdAt).toLocaleString()}</p>
+          ${generating ? `<span class="pill">In progress</span>` : ""}
+          ${failed ? `<span class="pill">Failed — retry from New Script</span>` : ""}
+        </article>`;
+      })
       .join("") || `<p class="meta">No generated scripts yet.</p>`;
 }
 
@@ -199,6 +219,7 @@ async function openReference(id) {
     createdAt: new Date().toISOString(),
     references: [],
     titleLoyaltyScore: "ref",
+    status: "complete",
   });
 }
 
@@ -206,14 +227,23 @@ document.querySelectorAll(".nav").forEach((btn) => {
   btn.addEventListener("click", () => {
     const view = btn.dataset.view;
     if (view === "history") loadHistory();
-    if (view === "library") loadLibrary();
-    showView(view);
+    else if (view === "library") {
+      showView("library");
+      loadLibrary();
+    } else showView(view);
   });
 });
 
 $("createForm").addEventListener("submit", (e) => {
   e.preventDefault();
   generate(formPayload());
+});
+
+$("queue").addEventListener("click", async (e) => {
+  const card = e.target.closest("article");
+  if (!card) return;
+  const item = await fetch(`/api/jobs/${card.dataset.job}`).then((r) => r.json());
+  openScript(item);
 });
 
 $("historyList").addEventListener("click", async (e) => {
@@ -230,8 +260,8 @@ $("libraryList").addEventListener("click", (e) => {
 });
 
 ["historyQ", "historyMaker", "historySort"].forEach((id) => {
-  $(id).addEventListener("input", loadHistory);
-  $(id).addEventListener("change", loadHistory);
+  $(id).addEventListener("input", () => loadHistory(false));
+  $(id).addEventListener("change", () => loadHistory(false));
 });
 $("libQ").addEventListener("input", loadLibrary);
 
@@ -239,19 +269,21 @@ document.querySelector("#view-script .actions").addEventListener("click", async 
   const act = e.target.dataset.act;
   const item = state.current;
   if (!item || !act) return;
+  if (item.status === "generating" && act !== "regen") return;
   if (act === "copy") {
-    await navigator.clipboard.writeText(item.script);
+    await navigator.clipboard.writeText(item.script || "");
     $("saveState").textContent = "Copied";
   }
   if (act === "txt") window.location = `/api/history/${item.id}.txt`;
   if (act === "docx") window.location = `/api/history/${item.id}.docx`;
   if (act === "regen") {
-    generate({
+    await generate({
       title: item.title,
       targetWordCount: item.targetWordCount || 3500,
       scriptMaker: item.scriptMaker || "royal-family",
       customInstructions: item.customInstructions || "",
     });
+    showView("create");
   }
   if (act === "edit") {
     state.editing = !state.editing;

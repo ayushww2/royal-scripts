@@ -17,7 +17,7 @@
     </div>
     <nav>
       <button class="nav on" data-view="create">New Script</button>
-      <button class="nav" data-view="history">History</button>
+      <button class="nav" data-view="history">History <span id="historyBadge" class="badge hidden">0</span></button>
       <button class="nav" data-view="library">Reference Database</button>
       <button class="nav" data-view="settings">Settings</button>
     </nav>
@@ -52,6 +52,7 @@
         </label>
         <button id="generateBtn" class="primary" type="submit">Generate Script</button>
       </form>
+      <div id="queue" class="queue hidden"></div>
     </section>
 
     <section id="view-progress" class="view hidden">

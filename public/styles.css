@@ -63,7 +63,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent); }
 .list h3 { margin: 0 0 6px; font-size: 18px; }
 .meta { color: var(--muted); font-size: 13px; }
 .save-state { color: var(--ok); font-size: 12px; }
-.toast { position: fixed; right: 20px; bottom: 20px; background: #3a1c1c; border: 1px solid var(--danger); padding: 12px 16px; max-width: 420px; box-shadow: var(--shadow); }
+.badge { display: inline-grid; place-items: center; min-width: 18px; height: 18px; margin-left: 8px; padding: 0 5px; background: var(--accent); color: #1a1308; font-size: 11px; font-weight: 700; }
+.queue { max-width: 760px; margin-top: 18px; display: grid; gap: 10px; }
+.queue article, .list article.generating { border-color: var(--accent); }
+.pill { display: inline-block; margin-top: 8px; padding: 3px 8px; border: 1px solid var(--line); color: var(--accent-2); font-size: 12px; }
+.toast.ok { background: #16301f; border-color: var(--ok); }
 .edit-area { width: 100%; min-height: 70vh; font-size: 17px; line-height: 1.65; }
 @media (max-width: 900px) {
   body { grid-template-columns: 1fr; }

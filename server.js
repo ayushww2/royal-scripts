@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const crypto = require("crypto");
 const { execSync } = require("child_process");
 const express = require("express");
 const db = require("./lib/db");
@@ -18,6 +19,13 @@ if (!fs.existsSync(INTEL_INDEX)) {
 }
 
 const app = express();
+const liveJobs = new Map();
+
+function jobSnapshot(id) {
+  const live = liveJobs.get(id);
+  const stored = history.get(id);
+  return { ...stored, ...live, id };
+}
 
 app.use(express.json({ limit: "4mb" }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -112,30 +120,88 @@ app.get("/api/history/:id.docx", async (req, res) => {
   res.send(buf);
 });
 
-app.post("/api/generate", async (req, res) => {
+app.get("/api/jobs", (_req, res) => {
+  const items = [...liveJobs.values()].map((job) => jobSnapshot(job.id));
+  res.json({ items });
+});
+
+app.get("/api/jobs/:id", (req, res) => {
+  const stored = history.get(req.params.id);
+  const live = liveJobs.get(req.params.id);
+  if (!stored && !live) return res.status(404).json({ error: "Not found" });
+  res.json({ ...stored, ...live, id: req.params.id });
+});
+
+app.post("/api/generate", (req, res) => {
   const title = String(req.body?.title || "").trim();
   if (!title) return res.status(400).json({ error: "Title is required" });
 
-  res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
-  res.setHeader("Cache-Control", "no-cache, no-transform");
-  res.setHeader("Connection", "keep-alive");
-  res.flushHeaders?.();
+  const id = crypto.randomBytes(8).toString("hex");
+  const scriptMaker = String(req.body?.scriptMaker || "royal-family");
+  const payload = {
+    id,
+    title,
+    targetWordCount: Number(req.body?.targetWordCount) || 3500,
+    scriptMaker,
+    customInstructions: String(req.body?.customInstructions || "").trim(),
+  };
 
-  try {
-    for await (const event of pipeline.generateScript({
-      title,
-      targetWordCount: req.body?.targetWordCount,
-      scriptMaker: req.body?.scriptMaker,
-      customInstructions: req.body?.customInstructions,
-      onStatus: (status) => res.write(`data: ${JSON.stringify({ type: "status", ...status })}\n\n`),
-    })) {
-      res.write(`data: ${JSON.stringify(event)}\n\n`);
+  const job = history.save({
+    ...payload,
+    scriptMakerLabel: pipeline.makerLabel(scriptMaker),
+    actualWordCount: 0,
+    script: "",
+    references: [],
+    status: "generating",
+    stage: "queued",
+    stageLabel: "Queued in background...",
+    error: null,
+  });
+  liveJobs.set(id, { ...job, draft: "" });
+
+  setImmediate(async () => {
+    try {
+      await pipeline.runJob({
+        ...payload,
+        onUpdate: (patch) => {
+          const current = liveJobs.get(id) || { id };
+          const next = { ...current, ...patch };
+          if (patch.draft) next.draft = patch.draft;
+          if (patch.script) next.draft = patch.script;
+          liveJobs.set(id, next);
+          if (patch.stage || patch.script || patch.status === "complete" || patch.status === "failed") {
+            history.update(id, {
+              status: patch.status || "generating",
+              stage: patch.stage,
+              stageLabel: patch.stageLabel,
+              ...(patch.script ? { script: patch.script } : {}),
+              error: patch.error || null,
+            });
+          }
+        },
+      });
+    } catch (err) {
+      history.update(id, {
+        status: "failed",
+        stage: "error",
+        stageLabel: "Generation was interrupted. Try again.",
+        error: err.message,
+      });
+      const current = liveJobs.get(id) || { id, title };
+      liveJobs.set(id, {
+        ...current,
+        status: "failed",
+        stage: "error",
+        stageLabel: "Generation was interrupted. Try again.",
+        error: err.message,
+      });
+      console.error("Background generate failed", id, err);
+    } finally {
+      setTimeout(() => liveJobs.delete(id), 15000);
     }
-  } catch (err) {
-    res.write(`data: ${JSON.stringify({ type: "error", error: err.message })}\n\n`);
-  } finally {
-    res.end();
-  }
+  });
+
+  res.json({ ok: true, job: jobSnapshot(id) });
 });
 
 app.listen(PORT, "0.0.0.0", () => {
