@@ -89,8 +89,28 @@ app.get("/api/history", (req, res) => {
 function royalScript(item) {
   const raw = item?.script || "";
   if (item?.scriptMaker !== "royal-family") return raw;
-  return segmentScript(royalMode.stripMeta(segmentScript(raw)));
+  return royalMode.stripMeta(raw);
 }
+
+app.get("/api/history/:id/docx", async (req, res) => {
+  try {
+    const item = history.get(req.params.id);
+    if (!item) return res.status(404).send("Not found");
+    const script = royalScript(item);
+    const buf = await exporter.toDocx({
+      ...item,
+      script,
+      actualWordCount: countWords(script),
+    });
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    res.setHeader("Content-Disposition", exporter.contentDisposition(item, "docx"));
+    res.setHeader("Content-Length", Buffer.byteLength(buf));
+    res.end(buf);
+  } catch (err) {
+    console.error("docx export failed", err);
+    res.status(500).send("Could not build Word document");
+  }
+});
 
 app.get("/api/history/:id", (req, res) => {
   const item = history.get(req.params.id);
@@ -119,24 +139,6 @@ app.patch("/api/history/:id", (req, res) => {
     status: "complete",
   });
   res.json(item);
-});
-
-app.get("/api/history/:id.txt", (req, res) => {
-  const item = history.get(req.params.id);
-  if (!item) return res.status(404).send("Not found");
-  const body = exporter.toTxt({ ...item, script: royalScript(item) });
-  res.setHeader("Content-Type", "text/plain; charset=utf-8");
-  res.setHeader("Content-Disposition", `attachment; filename="${exporter.filename(item, "txt")}"`);
-  res.send(body);
-});
-
-app.get("/api/history/:id.docx", async (req, res) => {
-  const item = history.get(req.params.id);
-  if (!item) return res.status(404).send("Not found");
-  const buf = await exporter.toDocx({ ...item, script: royalScript(item), actualWordCount: countWords(royalScript(item)) });
-  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-  res.setHeader("Content-Disposition", `attachment; filename="${exporter.filename(item, "docx")}"`);
-  res.send(buf);
 });
 
 app.get("/api/jobs", (_req, res) => {

@@ -274,8 +274,10 @@ document.querySelector("#view-script .actions").addEventListener("click", async 
     await navigator.clipboard.writeText(item.script || "");
     $("saveState").textContent = "Copied";
   }
-  if (act === "txt") window.location = `/api/history/${item.id}.txt`;
-  if (act === "docx") window.location = `/api/history/${item.id}.docx`;
+  if (act === "docx") {
+    window.location.href = `/api/history/${encodeURIComponent(item.id)}/docx`;
+    return;
+  }
   if (act === "regen") {
     await generate({
       title: item.title,
