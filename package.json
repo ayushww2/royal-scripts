@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "intel": "node scripts/build-intelligence.js"
+    "intel": "node scripts/build-intelligence.js",
+    "test": "node test/royal-mode.test.js"
   },
   "engines": {
     "node": ">=18"
