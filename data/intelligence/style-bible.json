@@ -1,0 +1,725 @@
+{
+  "corpusSize": 363,
+  "hook": {
+    "targetWords": 140,
+    "personAppearsImmediately": 52,
+    "typicalQuestions": 0.6,
+    "openingPatterns": [
+      {
+        "value": "my mother was the queen for a very long time and although you kind of know that this might happen you don't really think about it very much",
+        "count": 3
+      },
+      {
+        "value": "as my heir now assumes the scottish titles which have meant so much to me",
+        "count": 3
+      },
+      {
+        "value": "she was quite known for her feisty personality",
+        "count": 3
+      },
+      {
+        "value": "prince the duke of york issued a statement in tribute to his mother addressed to mommy mother your majesty three in one he said your majesty it",
+        "count": 2
+      },
+      {
+        "value": "it's not true really but it's quite fun watching people's reactions so if you're in a crowd you need to be aware that you're all watching to see",
+        "count": 2
+      },
+      {
+        "value": "i know she will bring to the demands of her new role the steadfast devotion to duty on which i have come to rely so much",
+        "count": 2
+      },
+      {
+        "value": "know that as much as we have now the reign of king and queen consort camila the future is and and their children as well",
+        "count": 2
+      },
+      {
+        "value": "some breaking news out of buckingham palace",
+        "count": 2
+      },
+      {
+        "value": "remember there's only room for one sovereign at a time not two",
+        "count": 2
+      },
+      {
+        "value": "even as we grieve we give thanks for this most faithful life",
+        "count": 2
+      },
+      {
+        "value": "the reason why i am so passionate about dyslexia is um is because of being a dyslexic person myself",
+        "count": 2
+      },
+      {
+        "value": "it is my view that the deceitful way the interview was obtained substantially influenced what my mother said",
+        "count": 2
+      },
+      {
+        "value": "i think there were there were not many people who understood just how broad his interests were and how supportive he was of a an astonishingly wide range",
+        "count": 2
+      },
+      {
+        "value": "thursday marks years since princess was killed in a car crash inside a paris tunnel an off duty french er doctor was the first on the scene",
+        "count": 2
+      },
+      {
+        "value": "obviously she is a princess but she's quite a tomboy um you know she loves climbing trees and she's very much an adventurer queen camila reportedly got upset",
+        "count": 2
+      },
+      {
+        "value": "so duchess of edinburgh just turned",
+        "count": 1
+      },
+      {
+        "value": "walked into that state banquet wearing the cambridge lovers' knot tiara and honestly that one detail completely took over the conversation around the entire event",
+        "count": 1
+      },
+      {
+        "value": "so camila parker bs is the queen consort of england wearing a crown and living in a palace",
+        "count": 1
+      },
+      {
+        "value": "so camila just got physically escorted out of a meeting at buckingham palace and the reason why is way more layered than the headline makes it sound",
+        "count": 1
+      },
+      {
+        "value": "prince really seems to be stepping into that future king role in a much more aggressive way lately",
+        "count": 1
+      }
+    ]
+  },
+  "narration": {
+    "avgSentenceWords": 17,
+    "questionsPerScript": 7,
+    "ctasPerScript": 1.3,
+    "estimatedSections": 10
+  },
+  "titleShapes": [
+    {
+      "value": "shocks-world",
+      "count": 27
+    },
+    {
+      "value": "dna-court",
+      "count": 14
+    },
+    {
+      "value": "exposed",
+      "count": 14
+    },
+    {
+      "value": "breaks-silence",
+      "count": 14
+    },
+    {
+      "value": "finally-revealed",
+      "count": 12
+    },
+    {
+      "value": "takes-control",
+      "count": 12
+    },
+    {
+      "value": "stuns",
+      "count": 12
+    },
+    {
+      "value": "banned-stripped",
+      "count": 11
+    },
+    {
+      "value": "what-they-found",
+      "count": 10
+    },
+    {
+      "value": "you-wont-believe",
+      "count": 10
+    },
+    {
+      "value": "at-age",
+      "count": 9
+    },
+    {
+      "value": "breaking",
+      "count": 9
+    },
+    {
+      "value": "caught",
+      "count": 8
+    },
+    {
+      "value": "secret-wish",
+      "count": 4
+    },
+    {
+      "value": "minutes-ago",
+      "count": 3
+    },
+    {
+      "value": "humiliated",
+      "count": 2
+    }
+  ],
+  "dominantEntities": [
+    {
+      "value": "prince william",
+      "count": 325
+    },
+    {
+      "value": "king charles",
+      "count": 324
+    },
+    {
+      "value": "buckingham palace",
+      "count": 322
+    },
+    {
+      "value": "princess anne",
+      "count": 301
+    },
+    {
+      "value": "queen elizabeth",
+      "count": 292
+    },
+    {
+      "value": "kate middleton",
+      "count": 282
+    },
+    {
+      "value": "princess diana",
+      "count": 238
+    },
+    {
+      "value": "windsor",
+      "count": 210
+    },
+    {
+      "value": "prince harry",
+      "count": 198
+    },
+    {
+      "value": "sandringham",
+      "count": 194
+    },
+    {
+      "value": "queen camilla",
+      "count": 173
+    },
+    {
+      "value": "prince george",
+      "count": 169
+    },
+    {
+      "value": "prince andrew",
+      "count": 144
+    },
+    {
+      "value": "princess charlotte",
+      "count": 138
+    },
+    {
+      "value": "prince edward",
+      "count": 115
+    },
+    {
+      "value": "prince philip",
+      "count": 69
+    },
+    {
+      "value": "meghan markle",
+      "count": 66
+    },
+    {
+      "value": "prince louis",
+      "count": 64
+    },
+    {
+      "value": "duchess sophie",
+      "count": 51
+    },
+    {
+      "value": "lady louise",
+      "count": 37
+    }
+  ],
+  "narrativeTags": [
+    {
+      "value": "power-shift",
+      "count": 247
+    },
+    {
+      "value": "secret-relationship",
+      "count": 236
+    },
+    {
+      "value": "family-conflict",
+      "count": 215
+    },
+    {
+      "value": "tragic-revelation",
+      "count": 165
+    },
+    {
+      "value": "confession",
+      "count": 125
+    },
+    {
+      "value": "hidden-discovery",
+      "count": 104
+    },
+    {
+      "value": "betrayal",
+      "count": 59
+    },
+    {
+      "value": "public-humiliation",
+      "count": 28
+    },
+    {
+      "value": "warning",
+      "count": 26
+    },
+    {
+      "value": "silence",
+      "count": 16
+    }
+  ],
+  "rehooks": [
+    {
+      "value": "what do you think",
+      "count": 8
+    },
+    {
+      "value": "so what do you think",
+      "count": 7
+    },
+    {
+      "value": "but here's where it gets interesting",
+      "count": 4
+    },
+    {
+      "value": "keep watching to find out what happened next",
+      "count": 4
+    },
+    {
+      "value": "now here's where it gets interesting",
+      "count": 3
+    },
+    {
+      "value": "do you see what the documentary actually was",
+      "count": 3
+    },
+    {
+      "value": "do you see the elegance of it",
+      "count": 3
+    },
+    {
+      "value": "can you imagine",
+      "count": 3
+    },
+    {
+      "value": "can you imagine that moment",
+      "count": 3
+    },
+    {
+      "value": "and you know what",
+      "count": 2
+    },
+    {
+      "value": "before we get into it make sure to subscribe to crown watch so you don't miss any updates on this story",
+      "count": 2
+    },
+    {
+      "value": "there is one thing you need to understand about before we go any further",
+      "count": 2
+    },
+    {
+      "value": "then looked his father in the face and demanded to know how can you be letting a stranger do this to your sons exploded",
+      "count": 2
+    },
+    {
+      "value": "what happened next showed that camila understood exactly what was coming and she was already trying to protect herself before it arrived",
+      "count": 2
+    },
+    {
+      "value": "without your permission",
+      "count": 2
+    },
+    {
+      "value": "what do you mean",
+      "count": 2
+    },
+    {
+      "value": "stay with us to see what happened next",
+      "count": 2
+    },
+    {
+      "value": "but no one was prepared for what happened next",
+      "count": 2
+    },
+    {
+      "value": "stick around to find out",
+      "count": 2
+    },
+    {
+      "value": "what would you have done in carol middleton's position",
+      "count": 2
+    },
+    {
+      "value": "do you think she was right to confront the queen consort so directly",
+      "count": 2
+    },
+    {
+      "value": "so what are your thoughts on this",
+      "count": 2
+    },
+    {
+      "value": "do you think i stole her the meaning was unmistakable",
+      "count": 2
+    },
+    {
+      "value": "do you think i wanted this",
+      "count": 2
+    },
+    {
+      "value": "so do you think the monarchy was right to have protected the royal properties jealously",
+      "count": 2
+    },
+    {
+      "value": "can't you do anything right he barked",
+      "count": 2
+    },
+    {
+      "value": "stick around because this is one royal twist you don't want to miss",
+      "count": 2
+    },
+    {
+      "value": "what happened next will shock you",
+      "count": 2
+    },
+    {
+      "value": "are you ready",
+      "count": 2
+    },
+    {
+      "value": "parker bs was a factor in the breakdown of your marriage",
+      "count": 2
+    }
+  ],
+  "transitions": [
+    {
+      "value": "but that's not all",
+      "count": 6
+    },
+    {
+      "value": "but here's where it gets interesting",
+      "count": 4
+    },
+    {
+      "value": "but here's the thing",
+      "count": 4
+    },
+    {
+      "value": "and although you kind of know that this might happen you don't really think about it very much",
+      "count": 4
+    },
+    {
+      "value": "and here's the kicker",
+      "count": 3
+    },
+    {
+      "value": "and why now",
+      "count": 3
+    },
+    {
+      "value": "but here's the problem",
+      "count": 2
+    },
+    {
+      "value": "but behind the scenes things were already starting to change in a quiet but important way",
+      "count": 2
+    },
+    {
+      "value": "but when she asked the answer was a hard no",
+      "count": 2
+    },
+    {
+      "value": "so annabelle stepped in",
+      "count": 2
+    },
+    {
+      "value": "and even after 's death annabelle never stopped publicly defending the relationship that had cost everything",
+      "count": 2
+    },
+    {
+      "value": "now we arrive at what may be the most emotionally resonant chapter in this extraordinary story",
+      "count": 2
+    },
+    {
+      "value": "but the moment did not end there",
+      "count": 2
+    },
+    {
+      "value": "but didn't stop there",
+      "count": 2
+    },
+    {
+      "value": "but these weren't just any letters",
+      "count": 2
+    },
+    {
+      "value": "but one thing is clear",
+      "count": 2
+    },
+    {
+      "value": "and subscribe for more also click the next video showing on your screen you will enjoy it",
+      "count": 2
+    },
+    {
+      "value": "and i felt you know you're losing people every single time you have those headlines",
+      "count": 2
+    },
+    {
+      "value": "but no one was prepared for what happened next",
+      "count": 2
+    },
+    {
+      "value": "but it did not end there",
+      "count": 2
+    },
+    {
+      "value": "but she was wrong",
+      "count": 2
+    },
+    {
+      "value": "and the man at althorp was watching",
+      "count": 2
+    },
+    {
+      "value": "but not this time",
+      "count": 2
+    },
+    {
+      "value": "but it didn't end there",
+      "count": 2
+    },
+    {
+      "value": "and calm dignified yet resolute urged her father in law to act swiftly",
+      "count": 2
+    },
+    {
+      "value": "and that's not all",
+      "count": 2
+    },
+    {
+      "value": "and the king's private secretary clutching a folder marked in bold red letters",
+      "count": 2
+    },
+    {
+      "value": "and here's what makes this even more shocking",
+      "count": 2
+    },
+    {
+      "value": "and we all know how that ended",
+      "count": 2
+    },
+    {
+      "value": "but this this is different",
+      "count": 2
+    },
+    {
+      "value": "but what exactly did camila do",
+      "count": 2
+    },
+    {
+      "value": "but while the world focused on lawsuits headlines and rumored connections to jeffrey epstein another story was brewing",
+      "count": 2
+    },
+    {
+      "value": "but behind the grandeur her daily reality was dominated by 's petty demands",
+      "count": 2
+    },
+    {
+      "value": "and there to i give thee my troth",
+      "count": 2
+    },
+    {
+      "value": "but this was only the beginning",
+      "count": 2
+    },
+    {
+      "value": "but by the end of the day everything had changed",
+      "count": 2
+    },
+    {
+      "value": "and at times when she looks at you there's a striking resemblance to princess",
+      "count": 2
+    },
+    {
+      "value": "and if so why",
+      "count": 2
+    },
+    {
+      "value": "and almost no one outside the palace walls knew",
+      "count": 2
+    },
+    {
+      "value": "so back in the meeting room the letter lay between them like a live thing",
+      "count": 2
+    }
+  ],
+  "questions": [
+    {
+      "value": "why does this matter",
+      "count": 3
+    },
+    {
+      "value": "what do you think",
+      "count": 3
+    },
+    {
+      "value": "what happened",
+      "count": 3
+    },
+    {
+      "value": "can you imagine that moment",
+      "count": 3
+    },
+    {
+      "value": "and you know what",
+      "count": 2
+    },
+    {
+      "value": "so where does all of this leave us",
+      "count": 2
+    },
+    {
+      "value": "if their relationship was never truly close was it only a matter of time before that distance led to a shift in power",
+      "count": 2
+    },
+    {
+      "value": "so what's the actual point of all this",
+      "count": 2
+    },
+    {
+      "value": "what is wrong with me",
+      "count": 2
+    },
+    {
+      "value": "then looked his father in the face and demanded to know how can you be letting a stranger do this to your sons",
+      "count": 2
+    },
+    {
+      "value": "so where does this leave us",
+      "count": 2
+    },
+    {
+      "value": "what was inside it that demanded that level of concealment",
+      "count": 2
+    },
+    {
+      "value": "why did the queen feel this level of protection was necessary",
+      "count": 2
+    },
+    {
+      "value": "may i speak with you",
+      "count": 2
+    },
+    {
+      "value": "why were my tiaras taken without my permission",
+      "count": 2
+    },
+    {
+      "value": "so remember the dress",
+      "count": 2
+    },
+    {
+      "value": "who are we supposed to really be looking at today",
+      "count": 2
+    },
+    {
+      "value": "when does tribute become pattern",
+      "count": 2
+    },
+    {
+      "value": "when does pattern become strategy",
+      "count": 2
+    },
+    {
+      "value": "so what are your thoughts on this",
+      "count": 2
+    }
+  ],
+  "ctas": [
+    {
+      "value": "remember to like share and subscribe for more",
+      "count": 41
+    },
+    {
+      "value": "don't forget to like and subscribe",
+      "count": 32
+    },
+    {
+      "value": "if you enjoyed the video like share and subscribe to our channel",
+      "count": 15
+    },
+    {
+      "value": "don't forget to like share and subscribe",
+      "count": 14
+    },
+    {
+      "value": "if you enjoyed watching this video make sure to like share and subscribe to our channel for more",
+      "count": 7
+    },
+    {
+      "value": "drop it in the comment section below",
+      "count": 4
+    },
+    {
+      "value": "don't forget to like share and subscribe for more",
+      "count": 3
+    },
+    {
+      "value": "hit subscribe to crown watch",
+      "count": 2
+    },
+    {
+      "value": "before we get into it make sure to subscribe to crown watch so you don't miss any updates on this story",
+      "count": 2
+    },
+    {
+      "value": "we'll see you in the next one",
+      "count": 2
+    },
+    {
+      "value": "and subscribe for more also click the next video showing on your screen you will enjoy it",
+      "count": 2
+    },
+    {
+      "value": "join us as we uncover the full story",
+      "count": 2
+    },
+    {
+      "value": "thoughts with us in the comment section remember to like share and subscribe for more also click the next video showing on your screen you will enjoy it",
+      "count": 2
+    },
+    {
+      "value": "don't forget to like share and subscribe for more updates",
+      "count": 2
+    },
+    {
+      "value": "share your thoughts with us in the comment section remember to like share and subscribe for more also click the next video showing on your screen you will",
+      "count": 2
+    },
+    {
+      "value": "of why does still have such an impact on the royal family and why is caught in the middle of the royal tension join us",
+      "count": 2
+    }
+  ],
+  "commonGround": {
+    "hookJob": "Validate the title in the first two sentences, open 2–3 curiosity gaps, withhold the full payoff, then force Section 1 with a 10–30 word rehook.",
+    "rehookJob": "End sections by creating a new unanswered need: contradiction, withheld detail, new person, or incomplete explanation. Vary the formula.",
+    "lineJob": "One spoken idea per line, about 10–15 words, visual-beat friendly.",
+    "ctaJob": "Two short subscribe CTAs: one near the middle woven into story, one in the outro. Never interrupt the strongest reveal.",
+    "payoffJob": "Release the title promise as a ladder across hook → early proof → contradiction → climax → lingering question."
+  }
+}

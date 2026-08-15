@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AW Script Intelligence</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="mark">AW</span>
+      <div>
+        <strong>Script Intelligence</strong>
+        <small id="corpusLabel">Training library</small>
+      </div>
+    </div>
+    <nav>
+      <button class="nav on" data-view="create">New Script</button>
+      <button class="nav" data-view="history">History <span id="historyBadge" class="badge hidden">0</span></button>
+      <button class="nav" data-view="library">Reference Database</button>
+      <button class="nav" data-view="settings">Settings</button>
+    </nav>
+    <div class="sidebar-foot" id="statusLine">Connecting</div>
+  </aside>
+
+  <main class="main">
+    <section id="view-create" class="view">
+      <header class="page-head">
+        <p class="eyebrow">Create script</p>
+        <h1>Write from proven patterns</h1>
+        <p class="lede">Every draft is ranked against the full success library, reverse-engineered, then written to the title promise.</p>
+      </header>
+      <form id="createForm" class="create">
+        <label class="title-field">
+          Title
+          <textarea id="title" required rows="3" placeholder="Before She Died, Princess Diana Revealed What Camilla Did Behind Closed Doors"></textarea>
+        </label>
+        <div class="row">
+          <label>
+            Script Maker
+            <select id="scriptMaker"></select>
+          </label>
+          <label>
+            Target word count
+            <input id="wordCount" type="number" min="800" max="8000" value="3500" />
+            <span class="hint">Lands within 100 words. Never overshoots by more than 100. Each line is 12–15 words.</span>
+          </label>
+        </div>
+        <label>
+          Custom instructions
+          <textarea id="custom" rows="6" placeholder="Add any special instructions for this script..."></textarea>
+        </label>
+        <button id="generateBtn" class="primary" type="submit">Generate Script</button>
+      </form>
+      <div id="queue" class="queue hidden"></div>
+    </section>
+
+    <section id="view-progress" class="view hidden">
+      <div class="progress-card">
+        <p class="eyebrow">Generating</p>
+        <h2 id="progressTitle"></h2>
+        <ol id="progressSteps" class="steps"></ol>
+        <pre id="liveDraft" class="live"></pre>
+      </div>
+    </section>
+
+    <section id="view-script" class="view hidden">
+      <div class="script-top">
+        <div>
+          <p class="eyebrow" id="scriptMeta"></p>
+          <h1 id="scriptTitle"></h1>
+        </div>
+        <div class="actions">
+          <button type="button" data-act="copy">Copy</button>
+          <button type="button" data-act="docx">Download DOCX</button>
+          <button type="button" data-act="edit">Edit</button>
+          <button type="button" data-act="regen" class="primary">Regenerate</button>
+        </div>
+      </div>
+      <details class="intel">
+        <summary>Script Intelligence</summary>
+        <div id="intelBody"></div>
+      </details>
+      <article id="scriptBody" class="script-body"></article>
+      <p class="save-state" id="saveState"></p>
+    </section>
+
+    <section id="view-history" class="view hidden">
+      <header class="page-head">
+        <p class="eyebrow">History</p>
+        <h1>Generated scripts</h1>
+      </header>
+      <div class="toolbar">
+        <input id="historyQ" type="search" placeholder="Search titles" />
+        <select id="historyMaker"><option value="all">All</option></select>
+        <select id="historySort">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="words">Word count</option>
+          <option value="alpha">Alphabetical</option>
+        </select>
+      </div>
+      <div id="historyList" class="list"></div>
+    </section>
+
+    <section id="view-library" class="view hidden">
+      <header class="page-head">
+        <p class="eyebrow">Reference database</p>
+        <h1>Successful scripts</h1>
+      </header>
+      <div class="toolbar">
+        <input id="libQ" type="search" placeholder="Search the trained library" />
+      </div>
+      <div id="libraryList" class="list"></div>
+    </section>
+
+    <section id="view-settings" class="view hidden">
+      <header class="page-head">
+        <p class="eyebrow">Settings</p>
+        <h1>Engine</h1>
+      </header>
+      <div class="settings" id="settingsBody"></div>
+    </section>
+  </main>
+
+  <div id="errorToast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

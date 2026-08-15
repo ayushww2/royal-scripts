@@ -1,0 +1,18 @@
+{
+  "collections": [
+    {
+      "id": "crownwatch-25k",
+      "label": "Crownwatch 25k",
+      "count": 94,
+      "words": 342032,
+      "archive": "archives/crownwatch-25k.zip"
+    },
+    {
+      "id": "prime-expedition-royal-50k",
+      "label": "Prime Expedition Royal 50k",
+      "count": 269,
+      "words": 1059662,
+      "archive": "archives/prime-expedition-royal-50k.zip"
+    }
+  ]
+}
